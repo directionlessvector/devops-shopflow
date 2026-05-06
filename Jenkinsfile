@@ -20,5 +20,12 @@ pipeline {
                 sh 'docker build -t shopflow-test .'
             }
         }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh 'kubectl apply -f k8s/deployment.yaml'
+                sh 'kubectl apply -f k8s/service.yaml'
+            }
+        }
     }
 }
