@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: jenkins
+  namespace: jenkins
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: jenkins
+
+  template:
+    metadata:
+      labels:
+        app: jenkins
+
+    spec:
+      serviceAccountName: jenkins-deployer
+
+      containers:
+      - name: jenkins
+
+        image: custom-jenkins
+        imagePullPolicy: Never
+
+        securityContext:
+          privileged: true
+          runAsUser: 0
+
+        ports:
+        - containerPort: 8080
+
+        volumeMounts:
+        - name: docker-sock
+          mountPath: /var/run/docker.sock
+
+      volumes:
+      - name: docker-sock
+        hostPath:
+          path: /var/run/docker.sock
