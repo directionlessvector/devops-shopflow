@@ -37,7 +37,14 @@ spec:
         - name: docker-sock
           mountPath: /var/run/docker.sock
 
+        - name: jenkins-home
+          mountPath: /var/jenkins_home
+
       volumes:
       - name: docker-sock
         hostPath:
           path: /var/run/docker.sock
+
+      - name: jenkins-home
+        persistentVolumeClaim:
+          claimName: jenkins-pvc
